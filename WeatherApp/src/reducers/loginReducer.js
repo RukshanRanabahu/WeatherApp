@@ -1,16 +1,17 @@
-import { COUNTER_CHANGE } from '../constants';
+import {LOGIN_AUTH} from '../constants';
+
 const initialState = {
-  count: 0
+  loginData: null,
 };
 const countReducer = (state = initialState, action) => {
   switch (action.type) {
-    case COUNTER_CHANGE:
+    case LOGIN_AUTH:
       return {
         ...state,
-        count: action.payload
+        loginData: action.payload,
       };
     default:
       return state;
   }
-}
+};
 export default countReducer;

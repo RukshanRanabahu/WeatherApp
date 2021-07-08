@@ -9,9 +9,10 @@ import {
   SafeAreaView,
   YellowBox,
   ScrollView,
+  FlatList,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { changeCount } from '../../actions/counter';
+import { loginAuthData } from '../../actions/login';
 import { bindActionCreators } from 'redux';
 
 class Login extends Component {
@@ -19,18 +20,42 @@ class Login extends Component {
     super(props);
 
     this.state = {
-      username: '',
-      password: '',
+      weatherData: null,
     };
   }
 
-  onLogin() {
-    const { username, password } = this.state;
-    Alert.alert('Credentials', `${username}  ${password}`);
+  /**
+   * @description Render Weather Details
+   * @memberof Login
+   */
+  renderWeatherDetails = ({ item, index }) => {
+    return (
+      <View key={index} style={styles.weatherCard}>
+        <Text style={styles.textHeading}>{item.label}</Text>
+        <Text style={styles.textDate}>{item.description}</Text>
+      </View>
+    );
   }
 
   render() {
     const { count } = this.props.count;
+
+    // ** I hard code this weatherInfo because http://test.rightapps.com.au/weather api returns empty response (no details in that response)
+    const weatherInfo = [
+      {
+        label: "Weather Information",
+        description: "show main weather details here"
+      },
+      {
+        label: "Sunrise/Sunset Information",
+        description: "show Sunrise/Sunset details here"
+      },
+      {
+        label: "Sunrise/Sunset Information",
+        description: "show Sunrise/Sunset details here"
+      }
+    ];
+    
     return (
       <ScrollView style={{ flex: 1 }}>
         <SafeAreaView>
@@ -44,18 +69,11 @@ class Login extends Component {
 
           <View style={styles.homeContainer}>
             <View style={styles.weatherInfoContainer}>
-              <View style={styles.weatherCard}>
-                <Text style={styles.textHeading}>Weather Information</Text>
-                <Text style={styles.textDate}>show main weather details here</Text>
-              </View>
-              <View style={styles.weatherCard}>
-                <Text style={styles.textHeading}>Weather Information</Text>
-                <Text style={styles.textDate}>show main weather details here</Text>
-              </View>
-              <View style={styles.weatherCard}>
-                <Text style={styles.textHeading}>Weather Information</Text>
-                <Text style={styles.textDate}>show main weather details here</Text>
-              </View>
+              <FlatList
+                data={weatherInfo}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={this.renderWeatherDetails}
+              />
             </View>
           </View>
         </SafeAreaView >
@@ -95,14 +113,9 @@ const styles = StyleSheet.create({
   },
   weatherInfoContainer: {
     flexDirection: 'column',
-    // justifyContent: 'center',
     alignItems: 'center',
     justifyContent: 'center',
-    // alignItems: 'center',
-    // minHeight: 140,
     width: '80%',
-    // padding: 10,
-    // margin: 20,
     backgroundColor: "#DDDDDD",
     borderRadius: 10,
   },
@@ -118,25 +131,14 @@ const styles = StyleSheet.create({
   textTemp: {
     ...TEXT_STYLE,
     fontSize: 35
-  },
-  //   container: {
-  //     flex: 0.3,
-  //     // justifyContent: "center",
-  //     paddingHorizontal: 10
-  //   },
-  //   button: {
-  //     alignItems: "center",
-  //     borderRadius: 7,
-  //     backgroundColor: "#2e86de",
-  //     padding: 10
-  //   },
+  }
 });
 
 const mapStateToProps = state => ({
   count: state.count,
 });
 
-const ActionCreators = Object.assign({}, changeCount);
+const ActionCreators = Object.assign({}, loginAuthData);
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(ActionCreators, dispatch),
 });

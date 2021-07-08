@@ -1,6 +1,7 @@
-// const COUNTER_CHANGE = 'COUNTER_CHANGE';
-// const Constants = {
-//   COUNTER_CHANGE,
-// };
-// export default Constants;
-export const COUNTER_CHANGE = 'COUNTER_CHANGE';
+const LOGIN_AUTH = 'LOGIN_AUTH';
+
+const Constants = {
+    LOGIN_AUTH,
+};
+
+export default Constants;
