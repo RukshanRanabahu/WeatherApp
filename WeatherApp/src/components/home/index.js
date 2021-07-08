@@ -1,20 +1,9 @@
-import React, {Component} from 'react';
-import {
-  StyleSheet,
-  View,
-  TextInput,
-  TouchableOpacity,
-  Text,
-  Alert,
-  SafeAreaView,
-  YellowBox,
-  ScrollView,
-  FlatList,
-} from 'react-native';
-import {connect} from 'react-redux';
-import {loginAuthData} from '../../actions/login';
-import {bindActionCreators} from 'redux';
-
+import React, { Component } from 'react';
+import { StyleSheet, View, Text, SafeAreaView, FlatList, Picker, ScrollView } from 'react-native';
+import { connect } from 'react-redux';
+import { loginAuthData } from '../../actions/login';
+import { bindActionCreators } from 'redux';
+import axios from 'axios';
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -24,14 +13,31 @@ class Login extends Component {
     };
   }
 
-  // static getDerivedStateFromProps(props, state) {
-  //   // return {:};
-  // }
+  static getDerivedStateFromProps(props, state) {
+    const { loginAuthToken } = props.loginData;
+
+    axios
+      .get('http://test.rightapps.com.au/weather', {
+        headers: {
+          Authorization: `token ${loginAuthToken}`,
+        },
+      })
+      .then(res => {
+        console.log(res.data);
+        let { details } = res.data.payload.data;
+        // *** this 'details' come as empty in the response
+        return { weatherData: details };
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    return null;
+  }
   /**
    * @description Render Weather Details
    * @memberof Login
    */
-  renderWeatherDetails = ({item, index}) => {
+  renderWeatherDetails = ({ item, index }) => {
     return (
       <View key={index} style={styles.weatherCard}>
         <Text style={styles.textHeading}>{item.label}</Text>
@@ -41,8 +47,6 @@ class Login extends Component {
   };
 
   render() {
-    const {loginAuthToken} = this.props.loginData;
-
     // ** I hard code this weatherInfo because http://test.rightapps.com.au/weather api returns empty response (no details in that response)
     const weatherInfo = [
       {
@@ -59,26 +63,29 @@ class Login extends Component {
       },
     ];
 
-    return (
-      <SafeAreaView>
-        <View style={styles.homeContainer}>
-          <View style={styles.homeCard}>
-            <Text style={styles.textDate}>Wed July 7th 2021</Text>
-            <Text style={styles.textTemp}>45°c</Text>
-            <Text style={styles.textDate}>Partly Cloudy</Text>
-          </View>
-        </View>
 
-        <View style={styles.homeContainer}>
-          <View style={styles.weatherInfoContainer}>
-            <FlatList
-              data={weatherInfo}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={this.renderWeatherDetails}
-            />
+    return (
+      <ScrollView>
+        <SafeAreaView>
+          <View style={styles.homeContainer}>
+            <View style={styles.homeCard}>
+              <Text style={styles.textDate}>Wed July 7th 2021</Text>
+              <Text style={styles.textTemp}>45°c</Text>
+              <Text style={styles.textDate}>Partly Cloudy</Text>
+            </View>
           </View>
-        </View>
-      </SafeAreaView>
+
+          <View style={styles.homeContainer}>
+            <View style={styles.weatherInfoContainer}>
+              <FlatList
+                data={weatherInfo}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={this.renderWeatherDetails}
+              />
+            </View>
+          </View>
+        </SafeAreaView>
+      </ScrollView>
     );
   }
 }
@@ -132,6 +139,11 @@ const styles = StyleSheet.create({
     ...TEXT_STYLE,
     fontSize: 35,
   },
+  container: {
+    flex: 1,
+    paddingTop: 40,
+    alignItems: "center"
+  }
 });
 
 const mapStateToProps = state => ({
