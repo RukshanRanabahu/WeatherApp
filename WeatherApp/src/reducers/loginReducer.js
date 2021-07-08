@@ -1,17 +1,19 @@
-import {LOGIN_AUTH} from '../constants';
+import {LOGIN_AUTH_TOKEN} from '../constants';
 
 const initialState = {
-  loginData: null,
+  loginAuthToken: null,
 };
-const countReducer = (state = initialState, action) => {
+
+const loginReducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOGIN_AUTH:
+    case LOGIN_AUTH_TOKEN:
       return {
         ...state,
-        loginData: action.payload,
+        loginAuthToken: action.payload,
       };
     default:
       return state;
   }
 };
-export default countReducer;
+
+export default loginReducer;

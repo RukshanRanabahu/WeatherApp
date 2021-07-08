@@ -13,15 +13,12 @@ const Stack = createStackNavigator();
 
 class App extends Component {
   render() {
-    const {count} = this.props.count;
     return (
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Home" component={Home} />
         </Stack.Navigator>
-        {/* <Login /> */}
-        {/* <Home /> */}
       </NavigationContainer>
     );
   }
@@ -36,7 +33,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  count: state.count,
+  loginData: state.loginData,
 });
 
 const ActionCreators = Object.assign({}, loginAuthData);

@@ -29,11 +29,7 @@ class Login extends Component {
 
   onLogin() {
     console.log('Login :: onLogin');
-    const { username, password } = this.state;
-    // Alert.alert('Credentials', `${username}  ${password}`);
-    // };
 
-    // goForAxios = () => {
     this.setState({
       fromFetch: false,
       loading: true,
@@ -64,8 +60,6 @@ class Login extends Component {
   }
 
   render() {
-    const { navigation } = this.props;
-    const { count } = this.props.count;
     return (
       <SafeAreaView>
         <View style={styles.loginContainer}>
@@ -131,7 +125,7 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  count: state.count,
+  loginAuthToken: state.loginAuthToken,
 });
 
 const ActionCreators = Object.assign({}, loginAuthData);

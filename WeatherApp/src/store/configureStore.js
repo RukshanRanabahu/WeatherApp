@@ -1,9 +1,12 @@
 import { createStore, combineReducers } from 'redux';
-import countReducer from '../reducers/loginReducer';
+import loginReducer from '../reducers/loginReducer';
+
 const rootReducer = combineReducers(
-  { count: countReducer }
+  { loginData: loginReducer }
 );
+
 const configureStore = () => {
   return createStore(rootReducer);
 }
+
 export default configureStore;

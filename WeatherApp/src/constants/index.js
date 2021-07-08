@@ -1,7 +1,1 @@
-const LOGIN_AUTH = 'LOGIN_AUTH';
-
-const Constants = {
-    LOGIN_AUTH,
-};
-
-export default Constants;
+export const LOGIN_AUTH_TOKEN = 'LOGIN_AUTH_TOKEN';
